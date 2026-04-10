@@ -1,10 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import { HeroSection } from "@/components/HeroSection";
-import { ProductCard } from "@/components/ProductCard";
+import { EditorialProductShowcase } from "@/components/EditorialProductShowcase";
 import { ImageGallery } from "@/components/ImageGallery";
 import { CounterAnimation } from "@/components/CounterAnimation";
-import { ScrollReveal } from "@/components/ScrollReveal";
+import { GsapScrollReveal } from "@/components/GsapScrollReveal";
+import { ParallaxBackdrop } from "@/components/ParallaxBackdrop";
 import { Button } from "@/components/ui/button";
 import { getProductBySlug } from "@/lib/products";
 
@@ -45,114 +46,144 @@ export default function HomePage() {
       <HeroSection
         title="Il primo affinamento di profumi a 35 metri di profondità"
         subtitle="Nato dal mare calabrese."
-        ctaLabel="Scopri i Profumi"
+        ctaLabel="Scopri i profumi"
         ctaHref="/shop"
         video="/hero-video.mp4"
+        backdropWord="mare"
       />
 
-      <section className="py-20 lg:py-28 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <ScrollReveal>
-              <div className="relative aspect-[4/3] rounded-lg overflow-hidden">
-                <Image
-                  src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80"
-                  alt="Affinamento sottomarino"
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                />
+      <section className="section-x section-y relative overflow-hidden bg-background">
+        <div className="mx-auto max-w-[1200px]">
+          <div className="grid items-start gap-16 lg:grid-cols-12 lg:gap-6">
+            <GsapScrollReveal className="lg:col-span-6" y={40}>
+              <div className="relative">
+                <div className="absolute -right-8 top-1/4 hidden h-48 w-48 rounded-full bg-primary/[0.06] blur-3xl lg:block" />
+                <div className="relative aspect-[4/5] max-h-[min(78vh,560px)] w-full shadow-[0_32px_80px_-28px_rgba(30,40,35,0.45)]">
+                  <Image
+                    src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80"
+                    alt="Affinamento sottomarino"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                </div>
               </div>
-            </ScrollReveal>
-            <ScrollReveal delay={0.2}>
-              <div>
-                <h2 className="font-serif text-3xl md:text-4xl font-semibold mb-6">
-                  L&apos;Essenza del Progetto
-                </h2>
-                <p className="text-muted-foreground text-lg leading-relaxed mb-4">
-                  Spirito Alchemico nasce da un&apos;intuizione rivoluzionaria: immergere
-                  le fragranze nelle acque del Tirreno calabrese, a 35 metri di
-                  profondità, per sei mesi. La pressione marina, i minerali
-                  dell&apos;oceano e la temperatura costante degli abissi
-                  trasformano le essenze botaniche in qualcosa di unico.
+            </GsapScrollReveal>
+
+            <GsapScrollReveal className="lg:col-span-5 lg:col-start-8" delay={0.12} y={36}>
+              <p className="font-sans text-[11px] font-medium uppercase tracking-[0.22em] text-primary/90">
+                Una nuova filosofia
+              </p>
+              <h2 className="mt-6 font-display text-display-sm font-light tracking-[-0.02em] text-foreground">
+                L&apos;essenza del progetto
+              </h2>
+              <div className="mt-10 space-y-8">
+                <p className="editorial-body max-w-md">
+                  Spirito Alchemico nasce da un&apos;intuizione rivoluzionaria:
+                  immergere le fragranze nelle acque del Tirreno calabrese, a 35
+                  metri di profondità, per sei mesi. La pressione marina, i
+                  minerali dell&apos;oceano e la temperatura costante degli
+                  abissi trasformano le essenze botaniche in qualcosa di unico.
                 </p>
-                <p className="text-muted-foreground text-lg leading-relaxed">
+                <p className="editorial-body max-w-md">
                   Bergamotto di Reggio Calabria, agrumi locali, erbe aromatiche e
-                  legni arabi caldi si fondono con l&apos;acqua di mare che rinfresca
-                  e potenzia ogni nota. Un processo mai realizzato prima al mondo.
+                  legni arabi caldi si fondono con l&apos;acqua di mare che
+                  rinfresca e potenzia ogni nota. Un processo mai realizzato
+                  prima al mondo.
                 </p>
-                <Button asChild variant="outline" className="mt-8">
-                  <Link href="/progetto">Scopri il Progetto</Link>
+              </div>
+              <div className="mt-14">
+                <Button asChild variant="pillOutline">
+                  <Link href="/progetto">Il progetto</Link>
                 </Button>
               </div>
-            </ScrollReveal>
+            </GsapScrollReveal>
           </div>
         </div>
       </section>
 
-      <section className="py-20 lg:py-28 px-4 bg-muted/10">
-        <div className="max-w-7xl mx-auto">
-          <ScrollReveal>
-            <h2 className="font-serif text-3xl md:text-4xl font-semibold text-center mb-16">
-              I Due Profumi
-            </h2>
-          </ScrollReveal>
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+      <section className="section-x relative overflow-hidden bg-cream/80 py-28 md:py-36">
+        <ParallaxBackdrop text="due" />
+        <div className="relative z-[1] mx-auto max-w-[1100px]">
+          <GsapScrollReveal>
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="font-sans text-[11px] font-medium uppercase tracking-[0.22em] text-primary/90">
+                Collezione
+              </p>
+              <h2 className="mt-5 font-display text-display-sm font-light tracking-[-0.02em] text-foreground">
+                I due profumi
+              </h2>
+              <p className="editorial-body mx-auto mt-8 max-w-lg">
+                Due narrazioni olfattive, un unico rito sottomarino. Forme
+                libere, senza cornici: la fragranza incontra il territorio.
+              </p>
+            </div>
+          </GsapScrollReveal>
+
+          <div className="mt-20 space-y-28 md:mt-28 md:space-y-36">
             {arcomagno && (
-              <ScrollReveal delay={0.1}>
-                <ProductCard product={arcomagno} />
-              </ScrollReveal>
+              <EditorialProductShowcase product={arcomagno} reversed={false} />
             )}
             {thalasi && (
-              <ScrollReveal delay={0.2}>
-                <ProductCard product={thalasi} />
-              </ScrollReveal>
+              <EditorialProductShowcase product={thalasi} reversed />
             )}
           </div>
-          <div className="text-center mt-12">
-            <Button asChild>
-              <Link href="/shop">Vedi Tutti i Profumi</Link>
+
+          <GsapScrollReveal className="mt-20 flex justify-center md:mt-24">
+            <Button asChild variant="pill">
+              <Link href="/shop">Vedi tutti i profumi</Link>
             </Button>
-          </div>
+          </GsapScrollReveal>
         </div>
       </section>
 
-      <section className="py-20 lg:py-28 px-4">
-        <div className="max-w-7xl mx-auto">
-          <ScrollReveal>
-            <h2 className="font-serif text-3xl md:text-4xl font-semibold text-center mb-12">
-              Il Territorio
-            </h2>
-          </ScrollReveal>
-          <ScrollReveal delay={0.1}>
-            <ImageGallery images={territorioImages} className="max-w-5xl mx-auto" />
-          </ScrollReveal>
-          <ScrollReveal delay={0.2}>
-            <p className="text-center text-muted-foreground mt-8 max-w-2xl mx-auto">
+      <section className="section-x section-y bg-background">
+        <div className="mx-auto max-w-6xl">
+          <GsapScrollReveal>
+            <div className="mx-auto max-w-xl text-center">
+              <p className="font-sans text-[11px] font-medium uppercase tracking-[0.22em] text-primary/90">
+                Origini
+              </p>
+              <h2 className="mt-5 font-display text-display-sm font-light tracking-[-0.02em] text-foreground">
+                Il territorio
+              </h2>
+            </div>
+          </GsapScrollReveal>
+          <GsapScrollReveal delay={0.08} className="mt-14 md:mt-20">
+            <ImageGallery images={territorioImages} />
+          </GsapScrollReveal>
+          <GsapScrollReveal delay={0.12} className="mt-14 md:mt-16">
+            <p className="editorial-body mx-auto max-w-2xl text-center">
               Dalle coltivazioni di bergamotto alla costa di San Nicola Arcella,
-              dall&apos;arco naturale di Arcomagno alle onde del Tirreno: la Calabria
-              è l&apos;anima di ogni nostra fragranza.
+              dall&apos;arco naturale di Arcomagno alle onde del Tirreno: la
+              Calabria è l&apos;anima di ogni nostra fragranza.
             </p>
-            <div className="text-center mt-8">
-              <Button asChild variant="outline">
-                <Link href="/territorio">Esplora il Territorio</Link>
+            <div className="mt-12 flex justify-center">
+              <Button asChild variant="pillOutline">
+                <Link href="/territorio">Esplora il territorio</Link>
               </Button>
             </div>
-          </ScrollReveal>
+          </GsapScrollReveal>
         </div>
       </section>
 
-      <section className="py-20 lg:py-28 px-4 bg-primary text-primary-foreground">
-        <div className="max-w-5xl mx-auto">
-          <ScrollReveal>
-            <h2 className="font-serif text-3xl md:text-4xl font-semibold text-center mb-4">
-              Prima Volta al Mondo
-            </h2>
-            <p className="text-center text-primary-foreground/90 mb-16">
-              Un processo unico. Numeri che raccontano l&apos;innovazione.
-            </p>
-          </ScrollReveal>
-          <ScrollReveal delay={0.1}>
+      <section className="relative overflow-hidden bg-cream-deep/70 py-28 md:py-36">
+        <ParallaxBackdrop text="primo" scrub={0.45} />
+        <div className="section-x relative z-[1] mx-auto max-w-5xl">
+          <GsapScrollReveal>
+            <div className="text-center">
+              <p className="font-sans text-[11px] font-medium uppercase tracking-[0.22em] text-primary/90">
+                Innovazione
+              </p>
+              <h2 className="mt-5 font-display text-display-sm font-light tracking-[-0.02em] text-foreground">
+                Prima volta al mondo
+              </h2>
+              <p className="editorial-body mx-auto mt-8 max-w-lg">
+                Un processo unico. Numeri che raccontano l&apos;innovazione.
+              </p>
+            </div>
+          </GsapScrollReveal>
+          <div className="mt-16 md:mt-20">
             <CounterAnimation
               items={[
                 { value: 35, suffix: "m", label: "Profondità" },
@@ -161,7 +192,7 @@ export default function HomePage() {
                 { value: 1, label: "Processo" },
               ]}
             />
-          </ScrollReveal>
+          </div>
         </div>
       </section>
     </>

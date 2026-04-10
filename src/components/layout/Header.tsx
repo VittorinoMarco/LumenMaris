@@ -26,44 +26,64 @@ export function Header() {
   const { openCart, getItemCount } = useCartStore();
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
+    const handleScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const isTransparent = pathname === "/" && !scrolled;
+  const isHome = pathname === "/";
+  const useGlassCapsule = isHome && !scrolled;
 
   return (
     <>
       <header
         className={cn(
-          "fixed top-0 left-0 right-0 z-40 transition-all duration-300",
-          isTransparent
-            ? "bg-transparent text-white"
-            : "bg-background/95 backdrop-blur-md border-b border-border text-foreground shadow-sm"
+          "fixed left-0 right-0 top-0 z-40 transition-all duration-500 ease-editorial",
+          useGlassCapsule
+            ? "border-transparent bg-transparent py-4 md:py-5"
+            : "border-b border-border/60 bg-background/85 py-0 text-foreground shadow-[0_1px_0_rgba(0,0,0,0.04)] backdrop-blur-xl"
         )}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 lg:h-20">
+        <div
+          className={cn(
+            "mx-auto max-w-7xl transition-[padding] duration-500",
+            useGlassCapsule ? "px-4 sm:px-6" : "px-4 sm:px-6 lg:px-8"
+          )}
+        >
+          <div
+            className={cn(
+              "flex items-center justify-between transition-all duration-500",
+              useGlassCapsule
+                ? "rounded-full border border-white/25 bg-white/12 px-4 py-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-xl md:px-8 md:py-3"
+                : "h-16 lg:h-[4.25rem]"
+            )}
+          >
             <Link href="/" className="flex items-center">
               <Image
                 src="/LogoLumenMaris.png"
                 alt="Spirito Alchemico"
                 width={140}
                 height={50}
-                className="h-10 w-auto"
+                className={cn(
+                  "h-9 w-auto transition-[filter] duration-300 md:h-10",
+                  useGlassCapsule && "brightness-0 invert"
+                )}
                 priority
               />
             </Link>
 
-            <nav className="hidden md:flex items-center gap-8">
+            <nav className="hidden items-center gap-9 md:flex">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    "text-sm font-medium transition-colors hover:text-secondary",
-                    pathname === link.href ? "text-secondary" : ""
+                    "font-sans text-[12px] font-normal uppercase tracking-[0.16em] transition-colors",
+                    useGlassCapsule
+                      ? "text-white/88 hover:text-white"
+                      : "text-muted-foreground hover:text-primary",
+                    pathname === link.href &&
+                      (useGlassCapsule ? "text-white" : "text-primary")
                   )}
                 >
                   {link.label}
@@ -71,31 +91,47 @@ export function Header() {
               ))}
             </nav>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 md:gap-3">
               <button
+                type="button"
                 onClick={openCart}
                 className={cn(
-                  "relative p-2 rounded-full transition-colors",
-                  isTransparent
-                    ? "hover:bg-white/20"
-                    : "hover:bg-accent/20 text-foreground"
+                  "relative rounded-full p-2.5 transition-colors",
+                  useGlassCapsule
+                    ? "text-white hover:bg-white/15"
+                    : "text-foreground hover:bg-muted/60"
                 )}
                 aria-label="Apri carrello"
               >
-                <ShoppingBag className="h-5 w-5" />
+                <ShoppingBag className="h-[1.15rem] w-[1.15rem]" />
                 {getItemCount() > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-secondary text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-medium">
+                  <span
+                    className={cn(
+                      "absolute -right-0.5 -top-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full px-1 text-[10px] font-medium",
+                      useGlassCapsule
+                        ? "bg-white text-primary"
+                        : "bg-primary text-primary-foreground"
+                    )}
+                  >
                     {getItemCount()}
                   </span>
                 )}
               </button>
 
               <button
-                className="md:hidden p-2"
+                type="button"
+                className={cn(
+                  "rounded-full p-2.5 md:hidden",
+                  useGlassCapsule ? "text-white" : "text-foreground"
+                )}
                 onClick={() => setMobileOpen(!mobileOpen)}
                 aria-label="Menu"
               >
-                {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                {mobileOpen ? (
+                  <X className="h-5 w-5" />
+                ) : (
+                  <Menu className="h-5 w-5" />
+                )}
               </button>
             </div>
           </div>
@@ -107,17 +143,17 @@ export function Header() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-background border-t border-border"
+              className="border-t border-border/60 bg-background/95 backdrop-blur-xl md:hidden"
             >
-              <div className="px-4 py-4 space-y-2">
+              <div className="space-y-1 px-5 py-6">
                 {navLinks.map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
                     className={cn(
-                      "block py-2 text-sm font-medium",
-                      pathname === link.href ? "text-secondary" : ""
+                      "block py-2.5 font-sans text-[12px] uppercase tracking-[0.14em] text-muted-foreground",
+                      pathname === link.href && "text-primary"
                     )}
                   >
                     {link.label}

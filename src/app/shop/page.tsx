@@ -24,10 +24,13 @@ export default function ShopPage() {
     <div className="pt-24 pb-20 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="mb-12">
-          <h1 className="font-serif text-4xl md:text-5xl font-semibold mb-4">
+          <p className="font-sans text-[11px] font-medium uppercase tracking-[0.2em] text-primary/90">
+            Collezione
+          </p>
+          <h1 className="font-display mt-4 text-display-sm font-light tracking-[-0.02em] text-foreground">
             Shop
           </h1>
-          <p className="text-muted-foreground text-lg max-w-2xl">
+          <p className="editorial-body mt-6 max-w-2xl">
             Scopri Arcomagno e Thalasi, i primi profumi al mondo affinati a 35
             metri di profondità nel mare calabrese.
           </p>

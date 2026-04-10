@@ -33,7 +33,7 @@ export function ProductCard({ product }: ProductCardProps) {
         whileHover={{ scale: 1.02 }}
         transition={{ duration: 0.2 }}
       >
-        <Card className="overflow-hidden">
+        <Card className="overflow-hidden border-border/60 transition-shadow duration-500 hover:shadow-[0_28px_60px_-28px_rgba(30,40,35,0.28)]">
           <div className="relative aspect-square overflow-hidden bg-muted/20">
             <Image
               src={product.image}
@@ -49,7 +49,9 @@ export function ProductCard({ product }: ProductCardProps) {
             )}
           </div>
           <CardContent className="p-4">
-            <h3 className="font-serif text-xl font-semibold">{product.name}</h3>
+            <h3 className="font-display text-xl font-light tracking-tight">
+              {product.name}
+            </h3>
             <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
               {product.description}
             </p>

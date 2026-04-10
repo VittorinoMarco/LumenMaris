@@ -2,25 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap");
 
 :root {
-  --background: #F9F6F1;
-  --foreground: #1A1A1A;
-  --primary: #356175;
-  --primary-foreground: #ffffff;
-  --secondary: #ae6036;
-  --secondary-foreground: #ffffff;
-  --accent: #68a48d;
-  --accent-foreground: #1A1A1A;
-  --muted: #5e191b;
-  --muted-foreground: #6b7280;
-  --card: #ffffff;
-  --card-foreground: #1A1A1A;
-  --border: #e5e7eb;
-  --input: #e5e7eb;
-  --font-serif: 'Cormorant Garamond', Georgia, serif;
-  --font-sans: 'Inter', system-ui, sans-serif;
+  --background: #f4f1ec;
+  --foreground: #1a1a18;
+  --primary: #4a5f52;
+  --primary-foreground: #faf8f5;
+  --secondary: #6b5344;
+  --secondary-foreground: #faf8f5;
+  --accent: #7a9083;
+  --accent-foreground: #1a1a18;
+  --muted: #e8e4dd;
+  --muted-foreground: #4a4844;
+  --card: #faf8f5;
+  --card-foreground: #1a1a18;
+  --border: #dcd6cc;
+  --input: #dcd6cc;
+  --sage-ink: #2f3d35;
+  --cream-deep: #ebe6de;
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Jost", system-ui, sans-serif;
 }
 
 * {
@@ -37,16 +39,39 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: var(--font-sans);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-serif);
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  .editorial-body {
+    @apply text-[17px] md:text-lg text-muted-foreground font-light leading-[1.75] tracking-[0.02em];
+  }
+
+  .section-y {
+    @apply py-24 md:py-32 lg:py-40;
+  }
+
+  .section-x {
+    @apply px-5 sm:px-8 lg:px-12;
   }
 }
