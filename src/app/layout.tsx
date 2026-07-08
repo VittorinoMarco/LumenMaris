@@ -1,29 +1,27 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
+import { ConditionalChrome } from "@/components/layout/ConditionalChrome";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://spiritoalchemico.it"),
+  metadataBase: new URL("https://lumenmaris.it"),
   icons: {
     icon: "/FaviconLumen.png",
   },
   title: {
-    default: "Spirito Alchemico | Profumi Affinati nel Mare Calabrese",
-    template: "%s | Spirito Alchemico",
+    default: "Lumen Maris | Underwater Parfume",
+    template: "%s | Lumen Maris",
   },
   description:
-    "Il primo affinamento di profumi a 35 metri di profondità. Arcomagno e Thalasi, nati dal mare calabrese, tra bergamotto, legni arabi e acqua di mare.",
+    "Profumi affinati a 35 metri nel mare calabrese. Saracenum e Thalasi — Lumen Maris, underwater parfume.",
   keywords: [
+    "Lumen Maris",
     "profumi",
     "Calabria",
-    "bergamotto",
+    "underwater parfume",
     "affinamento sottomarino",
-    "Arcomagno",
+    "Saracenum",
     "Thalasi",
-    "niche perfume",
   ],
-  authors: [{ name: "Spirito Alchemico" }],
   openGraph: {
     type: "website",
     locale: "it_IT",
@@ -38,9 +36,7 @@ export default function RootLayout({
   return (
     <html lang="it">
       <body className="antialiased">
-        <Header />
-        <main className="min-h-screen">{children}</main>
-        <Footer />
+        <ConditionalChrome>{children}</ConditionalChrome>
       </body>
     </html>
   );

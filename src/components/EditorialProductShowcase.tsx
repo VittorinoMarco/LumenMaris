@@ -16,13 +16,21 @@ if (typeof window !== "undefined") {
 interface EditorialProductShowcaseProps {
   product: Product;
   reversed?: boolean;
+  /** Base path per scheda prodotto (default /profumi) */
+  productBasePath?: string;
+  /** Solo CTA pre-order (aggiunge al carrello e apre il drawer) */
+  ctaMode?: "default" | "preorder";
 }
 
 export function EditorialProductShowcase({
   product,
   reversed = false,
+  productBasePath = "/profumi",
+  ctaMode = "default",
 }: EditorialProductShowcaseProps) {
   const addItem = useCartStore((s) => s.addItem);
+  const openCart = useCartStore((s) => s.openCart);
+  const productHref = `${productBasePath}/${product.slug}`;
   const blockRef = useRef<HTMLElement>(null);
   const imgWrapRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
@@ -81,6 +89,18 @@ export function EditorialProductShowcase({
     });
   };
 
+  const handlePreorder = (e: React.MouseEvent) => {
+    e.preventDefault();
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      size: product.size,
+    });
+    openCart();
+  };
+
   return (
     <article
       ref={blockRef}
@@ -91,13 +111,13 @@ export function EditorialProductShowcase({
       <div
         className={`lg:col-span-6 ${reversed ? "lg:order-2" : "lg:order-1"}`}
       >
-        <Link href={`/shop/${product.slug}`} className="group block">
+        <Link href={productHref} className="group block">
           <div
             ref={imgWrapRef}
             className="relative aspect-[3/4] max-h-[min(72vh,640px)] w-full overflow-visible"
           >
             <div className="absolute -inset-3 -z-10 rounded-[2px] bg-gradient-to-br from-cream-deep/80 to-transparent opacity-60 blur-xl md:-inset-6" />
-            <div className="relative h-full w-full overflow-hidden bg-cream-deep/40 shadow-[0_28px_60px_-20px_rgba(45,61,50,0.35)]">
+            <div className="lm-photo relative h-full w-full overflow-hidden bg-[var(--lm-sand)] shadow-[0_28px_60px_-20px_rgba(15,61,82,0.3)]">
               <Image
                 src={product.image}
                 alt={product.name}
@@ -130,16 +150,20 @@ export function EditorialProductShowcase({
           €{product.price} · {product.size}
         </p>
         <div className="mt-10 flex flex-wrap items-center gap-4">
-          <Button asChild variant="pill">
-            <Link href={`/shop/${product.slug}`}>Scopri</Link>
-          </Button>
-          <Button
-            type="button"
-            variant="pillOutline"
-            onClick={handleAdd}
-          >
-            Aggiungi al carrello
-          </Button>
+          {ctaMode === "preorder" ? (
+            <Button type="button" variant="pill" onClick={handlePreorder}>
+              Compra in pre-order
+            </Button>
+          ) : (
+            <>
+              <Button asChild variant="pill">
+                <Link href={productHref}>Scopri</Link>
+              </Button>
+              <Button type="button" variant="pillOutline" onClick={handleAdd}>
+                Aggiungi al carrello
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </article>

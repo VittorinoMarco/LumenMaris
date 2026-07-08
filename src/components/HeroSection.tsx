@@ -1,5 +1,6 @@
 "use client";
 
+import { lumenImages } from "@/lib/lumen-images";
 import Link from "next/link";
 import { useRef, useLayoutEffect } from "react";
 import gsap from "gsap";
@@ -89,6 +90,7 @@ export function HeroSection({
   return (
     <section
       ref={rootRef}
+      data-nav-surface="dark"
       className="relative flex min-h-[100svh] items-center justify-center overflow-hidden"
     >
       {video && (
@@ -112,7 +114,7 @@ export function HeroSection({
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: `url(https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1920&q=80)`,
+            backgroundImage: `url(${lumenImages.saracenumScoglioAcqua})`,
           }}
         />
       )}

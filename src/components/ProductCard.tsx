@@ -28,7 +28,7 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <Link href={`/shop/${product.slug}`}>
+    <Link href={`/profumi/${product.slug}`}>
       <motion.div
         whileHover={{ scale: 1.02 }}
         transition={{ duration: 0.2 }}

@@ -1,77 +1,144 @@
+@import "./../styles/lumen-tokens.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Outfit:wght@200;300;400;500&family=Pinyon+Script&display=swap");
 
-:root {
-  --background: #f4f1ec;
-  --foreground: #1a1a18;
-  --primary: #4a5f52;
-  --primary-foreground: #faf8f5;
-  --secondary: #6b5344;
-  --secondary-foreground: #faf8f5;
-  --accent: #7a9083;
-  --accent-foreground: #1a1a18;
-  --muted: #e8e4dd;
-  --muted-foreground: #4a4844;
-  --card: #faf8f5;
-  --card-foreground: #1a1a18;
-  --border: #dcd6cc;
-  --input: #dcd6cc;
-  --sage-ink: #2f3d35;
-  --cream-deep: #ebe6de;
-  --font-display: "Cormorant Garamond", Georgia, serif;
-  --font-sans: "Jost", system-ui, sans-serif;
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--lm-font-ui);
+    font-weight: 300;
+    color: var(--lm-text);
+    background: var(--lm-cream);
+    letter-spacing: 0.02em;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--lm-font-serif);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
+@layer components {
+  .lm-section {
+    padding-block: var(--lm-section-py);
+    padding-inline: var(--lm-section-px);
+  }
 
-html {
-  scroll-behavior: smooth;
-}
+  .lm-serif {
+    font-family: var(--lm-font-serif);
+  }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: var(--font-sans);
-  font-weight: 400;
-  letter-spacing: 0.01em;
-  line-height: 1.65;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+  .lm-script {
+    font-family: var(--lm-font-script);
+    font-weight: 400;
+    font-style: normal;
+  }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-display);
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  line-height: 1.15;
+  .lm-ui {
+    font-family: var(--lm-font-ui);
+  }
+
+  .lm-eyebrow {
+    @apply lm-ui text-[10px] font-normal uppercase tracking-[0.28em];
+    color: var(--lm-text-muted);
+  }
+
+  .lm-body {
+    @apply lm-ui text-[15px] font-light leading-[1.8] md:text-base;
+    color: var(--lm-text-muted);
+  }
+
+  .lm-photo {
+    overflow: hidden;
+    border-radius: var(--lm-radius-photo);
+  }
+
+  .lm-photo img,
+  .lm-photo video {
+    border-radius: var(--lm-radius-photo);
+  }
+
+  .lm-btn {
+    @apply lm-ui inline-flex items-center justify-center px-8 py-3 text-[11px] font-normal uppercase tracking-[0.2em] transition-all duration-300;
+    border-radius: var(--lm-radius-ui);
+  }
+
+  .lm-btn-solid {
+    background: var(--lm-ocean);
+    color: var(--lm-text-on-dark);
+  }
+
+  .lm-btn-solid:hover {
+    background: var(--lm-ocean-deep);
+  }
+
+  .lm-btn-outline {
+    border: 1px solid color-mix(in srgb, var(--lm-ocean) 35%, transparent);
+    color: var(--lm-text);
+    background: transparent;
+  }
+
+  .lm-btn-outline:hover {
+    border-color: var(--lm-ocean);
+    color: var(--lm-ocean);
+  }
+
+  .lm-btn-ghost-light {
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    color: var(--lm-text-on-dark);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+  }
+
+  .lm-btn-ghost-light:hover {
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  .lm-display-line {
+    @apply flex flex-wrap items-baseline justify-center gap-x-3 gap-y-1 text-center;
+  }
+
+  .lm-display-line .lm-word-serif {
+    @apply lm-serif text-[clamp(2rem,5.5vw,3.25rem)] font-normal;
+    color: var(--lm-text);
+  }
+
+  .lm-display-line .lm-word-script {
+    @apply lm-script text-[clamp(2.25rem,6vw,3.75rem)] leading-none;
+    color: var(--lm-ocean-mid);
+  }
+
+  .lm-on-dark .lm-word-serif {
+    color: var(--lm-text-on-dark);
+  }
+
+  .lm-on-dark .lm-word-script {
+    color: var(--lm-sky-soft);
+  }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
-  }
-
-  .editorial-body {
-    @apply text-[17px] md:text-lg text-muted-foreground font-light leading-[1.75] tracking-[0.02em];
-  }
-
-  .section-y {
-    @apply py-24 md:py-32 lg:py-40;
-  }
-
-  .section-x {
-    @apply px-5 sm:px-8 lg:px-12;
   }
 }

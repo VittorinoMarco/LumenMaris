@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useCartStore } from "@/store/cart-store";
-import { Button } from "@/components/ui/button";
 import { CheckoutButton } from "@/components/CheckoutButton";
 import { Minus, Plus, Trash2 } from "lucide-react";
 
@@ -25,7 +24,7 @@ export default function CartPage() {
 
   if (!mounted) {
     return (
-      <div className="pt-24 pb-20 px-4 min-h-screen">
+      <div data-nav-surface="light" className="pt-24 pb-20 px-4 min-h-screen">
         <div className="max-w-4xl mx-auto">
           <p className="text-muted-foreground">Caricamento...</p>
         </div>
@@ -34,18 +33,20 @@ export default function CartPage() {
   }
 
   return (
-    <div className="pt-24 pb-20 px-4 min-h-screen">
+    <div data-nav-surface="light" className="pt-24 pb-20 px-4 min-h-screen">
       <div className="max-w-4xl mx-auto">
-        <h1 className="font-serif text-4xl font-semibold mb-12">Carrello</h1>
+        <h1 className="lm-serif mb-12 text-4xl font-normal text-[var(--lm-text)]">
+          Carrello
+        </h1>
 
         {items.length === 0 ? (
           <div className="text-center py-16">
             <p className="text-muted-foreground text-lg mb-6">
               Il tuo carrello è vuoto
             </p>
-            <Button asChild>
-              <Link href="/shop">Vai allo Shop</Link>
-            </Button>
+            <Link href="/profumi" className="lm-btn lm-btn-solid">
+              Vai ai profumi
+            </Link>
           </div>
         ) : (
           <div className="grid lg:grid-cols-3 gap-12">
@@ -139,7 +140,7 @@ export default function CartPage() {
                 </div>
                 <CheckoutButton />
                 <p className="text-xs text-muted-foreground mt-4 text-center">
-                  Pagamento sicuro tramite Stripe (demo)
+                  Pagamento sicuro tramite Stripe
                 </p>
               </div>
             </div>

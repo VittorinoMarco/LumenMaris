@@ -3,7 +3,7 @@ import { ProductPageClient } from "./ProductPageClient";
 import {
   getProductBySlug,
   getRelatedProduct,
-  products,
+  getMainPerfumes,
 } from "@/lib/products";
 import type { Metadata } from "next";
 
@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  return products.map((p) => ({ slug: p.slug }));
+  return getMainPerfumes().map((p) => ({ slug: p.slug }));
 }
 
 export default async function ProductPage({ params }: Props) {
@@ -35,7 +35,9 @@ export default async function ProductPage({ params }: Props) {
   const product = getProductBySlug(slug);
   const related = getRelatedProduct(slug);
 
-  if (!product) notFound();
+  if (!product || !getMainPerfumes().some((p) => p.slug === slug)) {
+    notFound();
+  }
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -47,7 +49,7 @@ export default async function ProductPage({ params }: Props) {
       "@type": "Offer",
       price: product.price,
       priceCurrency: "EUR",
-      availability: "https://schema.org/InStock",
+      availability: "https://schema.org/PreOrder",
     },
   };
 
@@ -57,8 +59,11 @@ export default async function ProductPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="pt-24 pb-20 px-4">
-        <div className="max-w-7xl mx-auto">
+      <div
+        className="bg-[var(--lm-cream)] px-[var(--lm-section-px)] pb-20 pt-28"
+        data-nav-surface="light"
+      >
+        <div className="mx-auto max-w-7xl">
           <ProductPageClient product={product} relatedProduct={related} />
         </div>
       </div>

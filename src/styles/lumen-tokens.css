@@ -1,0 +1,50 @@
+/**
+ * LUMEN MARIS — Design tokens
+ * Modifica questi valori per personalizzare font, colori e angoli.
+ */
+
+:root {
+  /* —— Font (nomi Google Fonts o stack di sistema) —— */
+  --lm-font-serif: "Bodoni Moda", "Didot", "Bodoni MT", Georgia, serif;
+  --lm-font-script: "Pinyon Script", "Snell Roundhand", cursive;
+  --lm-font-ui: "Outfit", system-ui, sans-serif;
+
+  /* —— Colori mediterraneo / Capri —— */
+  --lm-ocean-deep: #0f3d52;
+  --lm-ocean: #1a5f7a;
+  --lm-ocean-mid: #2d7a9a;
+  --lm-sky: #8ecae6;
+  --lm-sky-soft: #c5e4f3;
+  --lm-cream: #faf8f4;
+  --lm-sand: #ebe6df;
+  --lm-sand-deep: #ddd6cc;
+  --lm-text: #2a5f75;
+  --lm-text-muted: #5a7f91;
+  --lm-text-on-dark: #ffffff;
+  --lm-text-on-dark-muted: rgba(255, 255, 255, 0.82);
+  --lm-accent: #3d8fb5;
+
+  /* —— Angoli (0 = spigoli vivi; 12–24 = morbido) —— */
+  --lm-radius-photo: 6px;
+  --lm-radius-ui: 9999px;
+  --lm-radius-soft: 8px;
+  --lm-radius-block: 0px;
+
+  /* —— Spaziatura sezioni —— */
+  --lm-section-py: clamp(5rem, 12vw, 9rem);
+  --lm-section-px: clamp(1.25rem, 5vw, 4rem);
+
+  /* Bridge verso Tailwind / shadcn esistenti */
+  --background: var(--lm-cream);
+  --foreground: var(--lm-ocean-deep);
+  --primary: var(--lm-ocean);
+  --primary-foreground: var(--lm-text-on-dark);
+  --secondary: var(--lm-ocean-mid);
+  --secondary-foreground: var(--lm-text-on-dark);
+  --muted: var(--lm-sand);
+  --muted-foreground: var(--lm-text-muted);
+  --border: color-mix(in srgb, var(--lm-ocean) 18%, transparent);
+  --input: var(--lm-sand-deep);
+  --font-display: var(--lm-font-serif);
+  --font-sans: var(--lm-font-ui);
+}

@@ -5,6 +5,7 @@ import { HeroSection } from "@/components/HeroSection";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Instagram, Facebook, MapPin } from "lucide-react";
+import { lumenImages } from "@/lib/lumen-images";
 
 export default function ContattiPage() {
   const [formState, setFormState] = useState({
@@ -13,21 +14,41 @@ export default function ContattiPage() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setSubmitting(true);
+    setSubmitError(null);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formState),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        setSubmitError(data.error ?? "Invio non riuscito");
+        return;
+      }
+      setSubmitted(true);
+    } catch {
+      setSubmitError("Errore di connessione");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
     <>
       <HeroSection
         title="Contatti"
-        image="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1920&q=80"
+        image={lumenImages.saracenumScoglioAcqua}
         overlay
       />
 
-      <section className="py-20 px-4">
+      <section data-nav-surface="light" className="py-20 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12">
             <div>
@@ -85,8 +106,11 @@ export default function ContattiPage() {
                       placeholder="Il tuo messaggio..."
                     />
                   </div>
-                  <Button type="submit" size="lg">
-                    Invia Messaggio
+                  {submitError && (
+                    <p className="text-sm text-red-600">{submitError}</p>
+                  )}
+                  <Button type="submit" size="lg" disabled={submitting}>
+                    {submitting ? "Invio..." : "Invia Messaggio"}
                   </Button>
                 </form>
               )}

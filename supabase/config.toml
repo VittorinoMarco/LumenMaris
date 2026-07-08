@@ -1,0 +1,23 @@
+# Lumen Maris — Supabase project
+# Docs: docs/SUPABASE_DEPLOY.md
+
+project_id = "tznvcumdnwsxqzdvypmc"
+
+[api]
+enabled = true
+
+[db]
+major_version = 17
+port = 54322
+
+[db.migrations]
+enabled = true
+# Cartella migrations/ versionata in git
+
+[db.seed]
+enabled = true
+sql_paths = ["./seed.sql"]
+
+[studio]
+enabled = true
+port = 54323

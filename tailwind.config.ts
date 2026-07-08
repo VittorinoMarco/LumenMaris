@@ -19,39 +19,34 @@ const config: Config = {
           DEFAULT: "var(--secondary)",
           foreground: "var(--secondary-foreground)",
         },
-        accent: {
-          DEFAULT: "var(--accent)",
-          foreground: "var(--accent-foreground)",
-        },
         muted: {
           DEFAULT: "var(--muted)",
           foreground: "var(--muted-foreground)",
         },
         border: "var(--border)",
         input: "var(--input)",
-        sage: {
-          DEFAULT: "#5a6f62",
-          dark: "#3d4a42",
-          muted: "#8fa396",
-        },
-        cream: {
-          DEFAULT: "#faf8f5",
-          deep: "#ebe6de",
+        lm: {
+          ocean: "var(--lm-ocean)",
+          "ocean-deep": "var(--lm-ocean-deep)",
+          "ocean-mid": "var(--lm-ocean-mid)",
+          sky: "var(--lm-sky)",
+          cream: "var(--lm-cream)",
+          sand: "var(--lm-sand)",
+          text: "var(--lm-text)",
+          "text-muted": "var(--lm-text-muted)",
         },
       },
       fontFamily: {
-        display: ["var(--font-display)", "Georgia", "serif"],
-        sans: ["var(--font-sans)", "system-ui", "sans-serif"],
-        serif: ["var(--font-display)", "Georgia", "serif"],
+        serif: ["var(--lm-font-serif)", "Georgia", "serif"],
+        script: ["var(--lm-font-script)", "cursive"],
+        sans: ["var(--lm-font-ui)", "system-ui", "sans-serif"],
+        display: ["var(--lm-font-serif)", "Georgia", "serif"],
       },
-      fontSize: {
-        "display-sm": ["clamp(2.5rem,6vw,4rem)", { lineHeight: "1.05" }],
-        "display-md": ["clamp(3rem,8vw,5.5rem)", { lineHeight: "1.02" }],
-        "display-lg": ["clamp(3.5rem,10vw,7rem)", { lineHeight: "0.98" }],
-      },
-      spacing: {
-        "18": "4.5rem",
-        "22": "5.5rem",
+      borderRadius: {
+        photo: "var(--lm-radius-photo)",
+        soft: "var(--lm-radius-soft)",
+        block: "var(--lm-radius-block)",
+        ui: "var(--lm-radius-ui)",
       },
       transitionTimingFunction: {
         editorial: "cubic-bezier(0.22, 1, 0.36, 1)",

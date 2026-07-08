@@ -3,169 +3,166 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingBag, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useCartStore } from "@/store/cart-store";
-import { CartDrawer } from "@/components/cart/CartDrawer";
+import { useNavSurfaceUnderHeader } from "@/hooks/use-nav-surface-under-header";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/progetto", label: "Il Progetto" },
-  { href: "/territorio", label: "Il Territorio" },
-  { href: "/shop", label: "Shop" },
-  { href: "/chi-siamo", label: "Chi Siamo" },
-  { href: "/contatti", label: "Contatti" },
+  { href: "/profumi", label: "Profumi" },
+  { href: "/cart", label: "Carrello" },
 ];
 
 export function Header() {
   const pathname = usePathname();
+  const headerRef = useRef<HTMLElement>(null);
+  const surface = useNavSurfaceUnderHeader(headerRef);
+  const onDarkSurface = surface === "dark";
+
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { openCart, getItemCount } = useCartStore();
+  const [mounted, setMounted] = useState(false);
+  const { getItemCount } = useCartStore();
+
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 32);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const isHome = pathname === "/";
-  const useGlassCapsule = isHome && !scrolled;
+  useEffect(() => {
+    if (!mobileOpen) return;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
+  const useSolidBar = scrolled || !onDarkSurface;
 
   return (
     <>
       <header
+        ref={headerRef}
+        id="site-header"
         className={cn(
-          "fixed left-0 right-0 top-0 z-40 transition-all duration-500 ease-editorial",
-          useGlassCapsule
-            ? "border-transparent bg-transparent py-4 md:py-5"
-            : "border-b border-border/60 bg-background/85 py-0 text-foreground shadow-[0_1px_0_rgba(0,0,0,0.04)] backdrop-blur-xl"
+          "sticky left-0 right-0 top-0 z-50 transition-[background-color,box-shadow,border-color] duration-500 ease-editorial",
+          useSolidBar
+            ? "border-b border-[var(--border)] bg-[color-mix(in_srgb,var(--lm-cream)_92%,transparent)] shadow-[0_8px_32px_-12px_rgba(15,61,82,0.12)] backdrop-blur-xl"
+            : "border-b border-transparent bg-transparent"
         )}
       >
-        <div
-          className={cn(
-            "mx-auto max-w-7xl transition-[padding] duration-500",
-            useGlassCapsule ? "px-4 sm:px-6" : "px-4 sm:px-6 lg:px-8"
-          )}
-        >
-          <div
-            className={cn(
-              "flex items-center justify-between transition-all duration-500",
-              useGlassCapsule
-                ? "rounded-full border border-white/25 bg-white/12 px-4 py-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-xl md:px-8 md:py-3"
-                : "h-16 lg:h-[4.25rem]"
-            )}
-          >
-            <Link href="/" className="flex items-center">
-              <Image
-                src="/LogoLumenMaris.png"
-                alt="Spirito Alchemico"
-                width={140}
-                height={50}
-                className={cn(
-                  "h-9 w-auto transition-[filter] duration-300 md:h-10",
-                  useGlassCapsule && "brightness-0 invert"
-                )}
-                priority
-              />
-            </Link>
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-[var(--lm-section-px)] py-4 md:py-5">
+          <Link href="/" className="flex shrink-0 items-center">
+            <Image
+              src="/LogoLumenMaris.png"
+              alt="Lumen Maris"
+              width={160}
+              height={56}
+              className="h-9 w-auto md:h-11"
+              priority
+            />
+          </Link>
 
-            <nav className="hidden items-center gap-9 md:flex">
+          <div className="ml-auto flex items-center gap-6 md:gap-10">
+            <nav className="hidden items-center gap-8 md:flex">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    "font-sans text-[12px] font-normal uppercase tracking-[0.16em] transition-colors",
-                    useGlassCapsule
-                      ? "text-white/88 hover:text-white"
-                      : "text-muted-foreground hover:text-primary",
-                    pathname === link.href &&
-                      (useGlassCapsule ? "text-white" : "text-primary")
+                    "lm-ui text-[10px] uppercase tracking-[0.24em] transition-colors",
+                    useSolidBar
+                      ? "text-[var(--lm-text-muted)] hover:text-[var(--lm-ocean)]"
+                      : "text-white/88 hover:text-white",
+                    pathname === link.href ||
+                      (link.href === "/profumi" &&
+                        pathname.startsWith("/profumi"))
+                      ? useSolidBar
+                        ? "text-[var(--lm-ocean)]"
+                        : "text-white"
+                      : ""
                   )}
                 >
                   {link.label}
+                  {link.href === "/cart" && getItemCount() > 0 && (
+                    <span className="ml-1.5 tabular-nums opacity-80">
+                      ({getItemCount()})
+                    </span>
+                  )}
                 </Link>
               ))}
             </nav>
 
-            <div className="flex items-center gap-2 md:gap-3">
-              <button
-                type="button"
-                onClick={openCart}
-                className={cn(
-                  "relative rounded-full p-2.5 transition-colors",
-                  useGlassCapsule
-                    ? "text-white hover:bg-white/15"
-                    : "text-foreground hover:bg-muted/60"
-                )}
-                aria-label="Apri carrello"
-              >
-                <ShoppingBag className="h-[1.15rem] w-[1.15rem]" />
-                {getItemCount() > 0 && (
-                  <span
-                    className={cn(
-                      "absolute -right-0.5 -top-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full px-1 text-[10px] font-medium",
-                      useGlassCapsule
-                        ? "bg-white text-primary"
-                        : "bg-primary text-primary-foreground"
-                    )}
-                  >
-                    {getItemCount()}
-                  </span>
-                )}
-              </button>
-
-              <button
-                type="button"
-                className={cn(
-                  "rounded-full p-2.5 md:hidden",
-                  useGlassCapsule ? "text-white" : "text-foreground"
-                )}
-                onClick={() => setMobileOpen(!mobileOpen)}
-                aria-label="Menu"
-              >
-                {mobileOpen ? (
-                  <X className="h-5 w-5" />
-                ) : (
-                  <Menu className="h-5 w-5" />
-                )}
-              </button>
-            </div>
+            <button
+              type="button"
+              className={cn(
+                "rounded-full p-2.5 md:hidden",
+                useSolidBar ? "text-[var(--lm-text)]" : "text-white"
+              )}
+              onClick={() => setMobileOpen(true)}
+              aria-label="Menu"
+            >
+              <Menu className="h-5 w-5" strokeWidth={1.5} />
+            </button>
           </div>
         </div>
-
-        <AnimatePresence>
-          {mobileOpen && (
-            <motion.nav
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="border-t border-border/60 bg-background/95 backdrop-blur-xl md:hidden"
-            >
-              <div className="space-y-1 px-5 py-6">
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    onClick={() => setMobileOpen(false)}
-                    className={cn(
-                      "block py-2.5 font-sans text-[12px] uppercase tracking-[0.14em] text-muted-foreground",
-                      pathname === link.href && "text-primary"
-                    )}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-            </motion.nav>
-          )}
-        </AnimatePresence>
       </header>
 
-      <CartDrawer />
+      {mounted &&
+        createPortal(
+          <AnimatePresence>
+            {mobileOpen && (
+              <motion.div
+                key="nav-mobile"
+                className="fixed inset-0 z-[9998] flex flex-col bg-[var(--lm-ocean-deep)] md:hidden"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <div className="flex items-center justify-between px-6 py-5">
+                  <Image
+                    src="/LogoLumenMaris.png"
+                    alt="Lumen Maris"
+                    width={140}
+                    height={48}
+                    className="h-9 w-auto brightness-0 invert"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setMobileOpen(false)}
+                    className="text-white"
+                    aria-label="Chiudi"
+                  >
+                    <X className="h-6 w-6" />
+                  </button>
+                </div>
+                <nav className="flex flex-1 flex-col items-center justify-center gap-10">
+                  {navLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setMobileOpen(false)}
+                      className="lm-ui text-sm uppercase tracking-[0.28em] text-white"
+                    >
+                      {link.label}
+                      {link.href === "/cart" && getItemCount() > 0
+                        ? ` (${getItemCount()})`
+                        : ""}
+                    </Link>
+                  ))}
+                </nav>
+              </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body
+        )}
     </>
   );
 }
