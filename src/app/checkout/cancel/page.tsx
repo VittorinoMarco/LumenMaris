@@ -9,7 +9,7 @@ export const metadata = {
 export default function CheckoutCancelPage() {
   return (
     <div
-      data-nav-surface="light"
+      data-theme="light"
       className="flex min-h-screen items-center justify-center px-4 pb-20 pt-24"
     >
       <div className="max-w-md text-center">

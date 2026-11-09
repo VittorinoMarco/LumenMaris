@@ -1,67 +1,67 @@
 "use client";
 
 import Image from "next/image";
-import { LumenDisplayTitle } from "./LumenDisplayTitle";
-import { GsapScrollReveal } from "@/components/GsapScrollReveal";
-
+import { ScrubText } from "@/components/motion/ScrubText";
+import { ClipReveal } from "@/components/motion/ClipReveal";
+import { Float, ParallaxFrame } from "@/components/motion/Parallax";
+import { Reveal } from "@/components/motion/Reveal";
 import { lumenImages } from "@/lib/lumen-images";
 
-const collage = [
-  {
-    src: lumenImages.saracenumScoglioAcqua,
-    alt: "Scogliera e mare",
-    className: "left-[4%] top-[8%] w-[38%] md:left-[6%] md:w-[28%]",
-  },
-  {
-    src: lumenImages.thalasiImmersa,
-    alt: "Thalasi immersa",
-    className: "right-[5%] top-[18%] w-[34%] md:right-[12%] md:w-[24%]",
-  },
-  {
-    src: lumenImages.profumiMurettoPalazzo,
-    alt: "Profumi sul muretto",
-    className: "bottom-[12%] left-[18%] w-[42%] md:left-[22%] md:w-[30%]",
-  },
-];
-
+/** Manifesto: il testo si accende parola per parola, le foto fluttuano a velocità diverse. */
 export function LumenPoetrySection() {
   return (
     <section
-      id="poetry"
-      data-nav-surface="light"
-      className="lm-section relative overflow-hidden bg-[var(--lm-cream)]"
+      id="manifesto"
+      data-theme="mist"
+      className="lm-section relative overflow-hidden !pb-[clamp(4rem,9vw,7rem)] !pt-[clamp(3rem,6vw,5rem)]"
     >
-      <div className="relative mx-auto min-h-[min(90vh,820px)] max-w-5xl py-8 md:min-h-[720px]">
-        {collage.map((img) => (
-          <div
-            key={img.src}
-            className={`lm-photo absolute shadow-[0_20px_50px_-20px_rgba(15,61,82,0.35)] ${img.className}`}
-          >
-            <div className="relative aspect-[4/5] w-full">
-              <Image
-                src={img.src}
-                alt={img.alt}
-                fill
-                className="object-cover"
-                sizes="30vw"
-              />
-            </div>
-          </div>
-        ))}
+      <div className="relative mx-auto max-w-[1400px]">
+        {/* foto fluttuanti (solo schermi larghi) */}
+        <Float distance={70} className="absolute left-0 top-[2%] hidden w-[21%] lg:block">
+          <ClipReveal>
+            <ParallaxFrame speed={7} className="lm-arch aspect-[3/4.2] shadow-[0_30px_60px_-30px_rgba(14,54,71,0.45)]">
+              <Image src={lumenImages.saracenumScoglioAcqua} alt="Scogliera e mare" fill sizes="22vw" className="object-cover" />
+            </ParallaxFrame>
+          </ClipReveal>
+        </Float>
+        <Float distance={110} className="absolute right-[1%] top-[26%] hidden w-[19%] lg:block">
+          <ClipReveal from="left" delay={0.1}>
+            <ParallaxFrame speed={7} className="aspect-[4/5] rounded-[2rem] shadow-[0_30px_60px_-30px_rgba(14,54,71,0.45)]">
+              <Image src={lumenImages.thalasiImmersa} alt="Thalasi immersa" fill sizes="20vw" className="object-cover" />
+            </ParallaxFrame>
+          </ClipReveal>
+        </Float>
+        <Float distance={50} className="absolute bottom-[0%] left-[13%] hidden w-[13%] lg:block">
+          <ClipReveal from="top" delay={0.2}>
+            <ParallaxFrame speed={6} className="aspect-square rounded-full shadow-[0_24px_50px_-26px_rgba(14,54,71,0.5)]">
+              <Image src={lumenImages.profumiMurettoPalazzo} alt="Profumi sul muretto" fill sizes="14vw" className="object-cover" />
+            </ParallaxFrame>
+          </ClipReveal>
+        </Float>
 
-        <GsapScrollReveal className="relative z-[1] flex min-h-[min(85vh,760px)] flex-col items-center justify-center px-4 py-24">
-          <LumenDisplayTitle
-            lines={[
-              { serif: "Mare", script: "profondo" },
-              { serif: "Sale", script: "marino" },
-              { serif: "Botaniche", script: "calabresi" },
-              { serif: "Sole", script: "mediterraneo" },
-            ]}
+        <div className="relative z-[1] mx-auto flex min-h-[min(72svh,680px)] max-w-[56rem] flex-col items-center justify-center text-center">
+          <Reveal as="p" className="lm-eyebrow mb-10">
+            Il manifesto
+          </Reveal>
+          <ScrubText
+            text="Un profumo affinato dove la luce non arriva. *Mare* profondo, sale marino, botaniche calabresi e *sole* mediterraneo, sigillati in un solo flacone."
+            className="lm-serif text-[clamp(1.9rem,4.3vw,3.9rem)] font-normal leading-[1.18] tracking-[-0.025em]"
           />
-          <p className="lm-script mt-14 text-center text-[clamp(1.75rem,4vw,2.75rem)] text-[var(--lm-ocean-mid)]">
-            lumen maris
-          </p>
-        </GsapScrollReveal>
+        </div>
+
+        {/* mobile: foto in riga */}
+        <div className="mt-14 grid grid-cols-2 gap-4 lg:hidden">
+          <ClipReveal>
+            <div className="lm-arch relative aspect-[3/4.2]">
+              <Image src={lumenImages.saracenumScoglioAcqua} alt="Scogliera e mare" fill sizes="45vw" className="object-cover" />
+            </div>
+          </ClipReveal>
+          <ClipReveal from="top" delay={0.12}>
+            <div className="relative mt-10 aspect-[3/4.2] rounded-[1.6rem] overflow-hidden">
+              <Image src={lumenImages.thalasiImmersa} alt="Thalasi immersa" fill sizes="45vw" className="object-cover" />
+            </div>
+          </ClipReveal>
+        </div>
       </div>
     </section>
   );

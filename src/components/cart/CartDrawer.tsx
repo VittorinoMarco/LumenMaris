@@ -2,106 +2,111 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
+import { Minus, Plus, X } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useCartStore } from "@/store/cart-store";
-import { Minus, Plus, Trash2 } from "lucide-react";
 
 export function CartDrawer() {
-  const { items, isOpen, closeCart, updateQuantity, removeItem, getSubtotal } =
-    useCartStore();
+  const { items, isOpen, closeCart, updateQuantity, removeItem, getSubtotal } = useCartStore();
 
   const subtotal = getSubtotal();
   const freeShipping = subtotal >= 100;
 
   return (
     <Sheet open={isOpen} onOpenChange={(open) => !open && closeCart()}>
-      <SheetContent side="right" className="flex flex-col">
-        <SheetHeader>
-          <SheetTitle>Il Tuo Carrello</SheetTitle>
+      <SheetContent side="right" className="flex flex-col" data-lenis-prevent aria-describedby={undefined}>
+        <SheetHeader className="flex-row items-end justify-between space-y-0 border-b border-[var(--t-line)] pb-5">
+          <SheetTitle>
+            Il tuo <span className="lm-script t-accent text-[2.3rem]">carrello</span>
+          </SheetTitle>
+          <button
+            type="button"
+            onClick={closeCart}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--t-line)] transition-colors hover:border-[var(--t-fg)]"
+            aria-label="Chiudi il carrello"
+          >
+            <X className="h-4 w-4" strokeWidth={1.4} />
+          </button>
         </SheetHeader>
 
-        <div className="flex-1 overflow-y-auto py-6">
+        <div className="flex-1 overflow-y-auto py-4">
           {items.length === 0 ? (
-            <p className="text-muted-foreground text-center py-12">
-              Il carrello è vuoto
-            </p>
+            <div className="py-20 text-center">
+              <p className="lm-script t-accent text-[2rem]">è ancora vuoto</p>
+              <Link href="/profumi" onClick={closeCart} className="lm-btn lm-btn-outline mt-8">
+                Scopri i profumi
+              </Link>
+            </div>
           ) : (
-            <ul className="space-y-4">
-              {items.map((item) => (
-                <li
-                  key={item.id}
-                  className="flex gap-4 py-4 border-b border-border last:border-0"
-                >
-                  <div className="relative w-20 h-20 flex-shrink-0 bg-muted/20 rounded overflow-hidden">
-                    <Image
-                      src={item.image}
-                      alt={item.name}
-                      fill
-                      className="object-cover"
-                      sizes="80px"
-                    />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className="font-serif font-medium truncate">{item.name}</h4>
-                    <p className="text-sm text-muted-foreground">{item.size}</p>
-                    <p className="font-medium mt-1">€{item.price.toFixed(2)}</p>
-                    <div className="flex items-center gap-2 mt-2">
-                      <button
-                        onClick={() =>
-                          updateQuantity(item.id, item.quantity - 1)
-                        }
-                        className="p-1 rounded hover:bg-muted"
-                        aria-label="Diminuisci quantità"
-                      >
-                        <Minus className="h-4 w-4" />
-                      </button>
-                      <span className="w-8 text-center">{item.quantity}</span>
-                      <button
-                        onClick={() =>
-                          updateQuantity(item.id, item.quantity + 1)
-                        }
-                        className="p-1 rounded hover:bg-muted"
-                        aria-label="Aumenta quantità"
-                      >
-                        <Plus className="h-4 w-4" />
-                      </button>
-                      <button
-                        onClick={() => removeItem(item.id)}
-                        className="p-1 rounded hover:bg-red-100 text-red-600 ml-2"
-                        aria-label="Rimuovi"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
+            <ul>
+              <AnimatePresence initial={false}>
+                {items.map((item) => (
+                  <motion.li
+                    key={item.id}
+                    layout
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, x: 40, height: 0, paddingBlock: 0 }}
+                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    className="flex gap-4 overflow-hidden border-b border-[var(--t-line)] py-5 last:border-0"
+                  >
+                    <div className="relative h-24 w-[4.5rem] shrink-0 overflow-hidden rounded-t-full bg-[var(--lm-sand-deep)]">
+                      <Image src={item.image} alt={item.name} fill sizes="72px" className="object-cover" />
                     </div>
-                  </div>
-                </li>
-              ))}
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <h4 className="lm-italic truncate text-[1.25rem] leading-tight">{item.name}</h4>
+                          <p className="lm-eyebrow mt-1">{item.size}</p>
+                        </div>
+                        <p className="lm-italic text-[1.15rem] tabular-nums">€{(item.price * item.quantity).toFixed(2)}</p>
+                      </div>
+                      <div className="mt-4 flex items-center justify-between">
+                        <div className="flex items-center rounded-full border border-[var(--t-line)]">
+                          <button
+                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                            className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-[var(--t-card)]"
+                            aria-label="Diminuisci quantità"
+                          >
+                            <Minus className="h-3 w-3" strokeWidth={1.4} />
+                          </button>
+                          <span className="w-6 text-center text-sm tabular-nums">{item.quantity}</span>
+                          <button
+                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                            className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-[var(--t-card)]"
+                            aria-label="Aumenta quantità"
+                          >
+                            <Plus className="h-3 w-3" strokeWidth={1.4} />
+                          </button>
+                        </div>
+                        <button
+                          onClick={() => removeItem(item.id)}
+                          className="lm-link lm-ui text-[10px] uppercase tracking-[0.2em] text-[var(--t-muted)] hover:text-[var(--t-fg)]"
+                        >
+                          Rimuovi
+                        </button>
+                      </div>
+                    </div>
+                  </motion.li>
+                ))}
+              </AnimatePresence>
             </ul>
           )}
         </div>
 
         {items.length > 0 && (
-          <div className="border-t border-border pt-4 space-y-4">
-            {freeShipping && (
-              <p className="text-sm text-accent font-medium">
-                Spedizione gratuita sopra €100
-              </p>
-            )}
-            <div className="flex justify-between text-lg font-serif">
-              <span>Subtotale</span>
-              <span>€{subtotal.toFixed(2)}</span>
+          <div className="space-y-4 border-t border-[var(--t-line)] pt-5">
+            <p className="lm-ui text-xs text-[var(--t-muted)]">
+              {freeShipping ? "Spedizione gratuita ✦" : `Ancora €${(100 - subtotal).toFixed(2)} per la spedizione gratuita`}
+            </p>
+            <div className="flex items-baseline justify-between">
+              <span className="lm-eyebrow">Subtotale</span>
+              <span className="lm-italic text-[1.9rem] tabular-nums">€{subtotal.toFixed(2)}</span>
             </div>
-            <Button asChild className="w-full" size="lg">
-              <Link href="/cart" onClick={closeCart}>
-                Vai al Checkout
-              </Link>
-            </Button>
+            <Link href="/cart" onClick={closeCart} className="lm-btn lm-btn-solid w-full !py-4">
+              Vai al checkout <span className="lm-btn-arrow">→</span>
+            </Link>
           </div>
         )}
       </SheetContent>

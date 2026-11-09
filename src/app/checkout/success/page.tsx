@@ -95,7 +95,7 @@ function SuccessContent() {
 export default function CheckoutSuccessPage() {
   return (
     <div
-      data-nav-surface="light"
+      data-theme="light"
       className="flex min-h-screen items-center justify-center px-4 pb-20 pt-24"
     >
       <Suspense fallback={<p className="text-muted-foreground">Caricamento...</p>}>

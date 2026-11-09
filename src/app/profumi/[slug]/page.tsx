@@ -60,8 +60,8 @@ export default async function ProductPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div
-        className="bg-[var(--lm-cream)] px-[var(--lm-section-px)] pb-20 pt-28"
-        data-nav-surface="light"
+        className="px-[var(--lm-section-px)] pb-24 pt-28 md:pt-36"
+        data-theme={slug === "thalasi" ? "blush" : "sand"}
       >
         <div className="mx-auto max-w-7xl">
           <ProductPageClient product={product} relatedProduct={related} />

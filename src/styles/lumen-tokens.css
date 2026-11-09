@@ -1,49 +1,69 @@
 /**
  * LUMEN MARIS — Design tokens
- * Modifica questi valori per personalizzare font, colori e angoli.
+ * Palette "mare al tramonto": sale, salvia marina, sabbia calda, rosa cipria, blu profondo.
+ *
+ * --lm-*  → colori fissi del brand
+ * --t-*   → colori "di tema" animati dallo scroll (vedi src/lib/theme.ts):
+ *           cambiano da una sezione all'altra, con una dissolvenza morbida.
  */
 
 :root {
-  /* —— Font (nomi Google Fonts o stack di sistema) —— */
-  --lm-font-serif: "Bodoni Moda", "Didot", "Bodoni MT", Georgia, serif;
-  --lm-font-script: "Pinyon Script", "Snell Roundhand", cursive;
-  --lm-font-ui: "Outfit", system-ui, sans-serif;
+  /* —— Font (caricati con next/font in layout.tsx) —— */
+  --lm-font-serif: var(--font-bodoni), "Bodoni Moda", "Didot", Georgia, serif;
+  --lm-font-script: var(--font-pinyon), "Pinyon Script", "Snell Roundhand", cursive;
+  --lm-font-ui: var(--font-outfit), "Outfit", system-ui, sans-serif;
 
-  /* —— Colori mediterraneo / Capri —— */
-  --lm-ocean-deep: #0f3d52;
+  /* —— Colori brand —— */
+  --lm-ocean-deep: #0e3647;
   --lm-ocean: #1a5f7a;
   --lm-ocean-mid: #2d7a9a;
   --lm-sky: #8ecae6;
-  --lm-sky-soft: #c5e4f3;
-  --lm-cream: #faf8f4;
-  --lm-sand: #ebe6df;
-  --lm-sand-deep: #ddd6cc;
-  --lm-text: #2a5f75;
-  --lm-text-muted: #5a7f91;
-  --lm-text-on-dark: #ffffff;
-  --lm-text-on-dark-muted: rgba(255, 255, 255, 0.82);
+  --lm-sky-soft: #bfe0ee;
+  --lm-cream: #f6f0e6;
+  --lm-sand: #f1e5d3;
+  --lm-sand-deep: #e3d3bd;
+  --lm-mist: #dfe9e3;
+  --lm-blush: #efd3c3;
+  --lm-terra: #b9744f;
+  --lm-text: #17424f;
+  --lm-text-muted: #5f7882;
+  --lm-text-on-dark: #f6efe3;
+  --lm-text-on-dark-muted: rgba(246, 239, 227, 0.74);
   --lm-accent: #3d8fb5;
 
-  /* —— Angoli (0 = spigoli vivi; 12–24 = morbido) —— */
+  /* —— Colori di tema (default = chiaro; animati da ThemeScroller) —— */
+  --t-bg: rgb(246, 240, 230);
+  --t-fg: rgb(23, 66, 79);
+  --t-muted: rgb(95, 120, 130);
+  --t-accent: rgb(45, 122, 154);
+  --t-line: rgba(23, 66, 79, 0.16);
+  --t-card: rgba(255, 255, 255, 0.5);
+
+  /* —— Angoli —— */
   --lm-radius-photo: 6px;
   --lm-radius-ui: 9999px;
-  --lm-radius-soft: 8px;
+  --lm-radius-soft: 14px;
   --lm-radius-block: 0px;
+  --lm-arch: 999px 999px 0 0;
 
   /* —— Spaziatura sezioni —— */
   --lm-section-py: clamp(5rem, 12vw, 9rem);
   --lm-section-px: clamp(1.25rem, 5vw, 4rem);
 
+  /* —— Easing e durate —— */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+
   /* Bridge verso Tailwind / shadcn esistenti */
-  --background: var(--lm-cream);
-  --foreground: var(--lm-ocean-deep);
+  --background: var(--t-bg);
+  --foreground: var(--t-fg);
   --primary: var(--lm-ocean);
   --primary-foreground: var(--lm-text-on-dark);
   --secondary: var(--lm-ocean-mid);
   --secondary-foreground: var(--lm-text-on-dark);
   --muted: var(--lm-sand);
   --muted-foreground: var(--lm-text-muted);
-  --border: color-mix(in srgb, var(--lm-ocean) 18%, transparent);
+  --border: var(--t-line);
   --input: var(--lm-sand-deep);
   --font-display: var(--lm-font-serif);
   --font-sans: var(--lm-font-ui);

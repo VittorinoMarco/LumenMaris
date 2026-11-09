@@ -3,21 +3,13 @@ import { cn } from "@/lib/utils";
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, ...props }, ref) => {
-    return (
-      <input
-        type={type}
-        className={cn(
-          "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-          className
-        )}
-        ref={ref}
-        {...props}
-      />
-    );
-  }
-);
+/** Campo "a filo": solo una linea sotto, che si accende al focus. */
+export const fieldClass =
+  "flex w-full border-0 border-b border-[var(--t-line)] bg-transparent px-0 py-3 text-base font-light text-[var(--t-fg)] placeholder:text-[var(--t-muted)]/70 transition-colors duration-500 focus-visible:border-[var(--t-fg)] focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50";
+
+const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className, type, ...props }, ref) => {
+  return <input type={type} className={cn(fieldClass, "h-12", className)} ref={ref} {...props} />;
+});
 Input.displayName = "Input";
 
 export { Input };

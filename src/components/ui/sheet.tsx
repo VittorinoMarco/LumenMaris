@@ -15,7 +15,7 @@ const SheetOverlay = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Overlay
     className={cn(
-      "fixed inset-0 z-50 bg-black/50 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      "fixed inset-0 z-[9990] bg-[color-mix(in_srgb,var(--lm-ocean-deep)_45%,transparent)] backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
       className
     )}
     {...props}
@@ -38,11 +38,11 @@ const SheetContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed z-50 gap-4 bg-background p-6 shadow-lg transition ease-in-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:duration-300 data-[state=open]:duration-500",
+        "fixed z-[9991] gap-4 bg-[var(--lm-cream)] p-7 text-[var(--t-fg)] shadow-[0_0_80px_-20px_rgba(14,54,71,0.5)] transition ease-in-out [--t-bg:rgb(246,240,230)] [--t-fg:rgb(23,66,79)] [--t-muted:rgb(95,120,130)] [--t-accent:rgb(45,122,154)] [--t-line:rgba(23,66,79,0.16)] [--t-card:rgba(255,255,255,0.5)] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:duration-300 data-[state=open]:duration-500",
         side === "right" &&
-          "inset-y-0 right-0 h-full w-3/4 max-w-sm border-l data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right",
+          "inset-y-0 right-0 h-full w-[92%] max-w-md border-l data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right",
         side === "left" &&
-          "inset-y-0 left-0 h-full w-3/4 max-w-sm border-r data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left",
+          "inset-y-0 left-0 h-full w-[92%] max-w-md border-r data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left",
         className
       )}
       {...props}
@@ -87,7 +87,7 @@ const SheetTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Title
     ref={ref}
-    className={cn("font-serif text-lg font-semibold", className)}
+    className={cn("lm-italic text-[1.9rem] font-normal leading-none", className)}
     {...props}
   />
 ));

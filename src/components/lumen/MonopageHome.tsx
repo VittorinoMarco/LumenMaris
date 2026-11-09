@@ -5,7 +5,6 @@ import { LumenPoetrySection } from "./LumenPoetrySection";
 import { LumenPerfumiSection } from "./LumenPerfumiSection";
 import { LumenProgettoSection } from "./LumenProgettoSection";
 import { LumenTerritorioSection } from "./LumenTerritorioSection";
-import { LumenContattiSection } from "./LumenContattiSection";
 
 export function MonopageHome() {
   return (
@@ -15,7 +14,6 @@ export function MonopageHome() {
       <LumenPerfumiSection />
       <LumenProgettoSection />
       <LumenTerritorioSection />
-      <LumenContattiSection />
     </>
   );
 }

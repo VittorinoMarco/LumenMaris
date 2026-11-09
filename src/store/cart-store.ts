@@ -82,6 +82,10 @@ export const useCartStore = create<CartStore>()(
         return get().items.reduce((sum, item) => sum + item.quantity, 0);
       },
     }),
-    { name: "spirito-alchemico-cart" }
+    {
+      name: "spirito-alchemico-cart",
+      // il cassetto non deve riaprirsi da solo al ricaricamento
+      partialize: (state) => ({ items: state.items }),
+    }
   )
 );

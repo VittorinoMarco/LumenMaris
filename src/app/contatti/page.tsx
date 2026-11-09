@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { HeroSection } from "@/components/HeroSection";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Instagram, Facebook, MapPin } from "lucide-react";
+import { Input, fieldClass } from "@/components/ui/input";
+import { LumenDisplayTitle } from "@/components/lumen/LumenDisplayTitle";
+import { Reveal } from "@/components/motion/Reveal";
+import { ParallaxImage } from "@/components/motion/Parallax";
+import { ClipReveal } from "@/components/motion/ClipReveal";
 import { lumenImages } from "@/lib/lumen-images";
 
 export default function ContattiPage() {
@@ -41,122 +43,117 @@ export default function ContattiPage() {
   };
 
   return (
-    <>
-      <HeroSection
-        title="Contatti"
-        image={lumenImages.saracenumScoglioAcqua}
-        overlay
-      />
+    <div data-theme="mist" className="px-[var(--lm-section-px)] pb-28 pt-32 md:pt-40">
+      <div className="mx-auto max-w-6xl">
+        <div className="text-center">
+          <Reveal as="p" className="lm-eyebrow mb-6">
+            Parliamo
+          </Reveal>
+          <LumenDisplayTitle as="h1" size="lg" lines={[{ serif: "Scrivici", script: "ti rispondiamo" }]} />
+        </div>
 
-      <section data-nav-surface="light" className="py-20 px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12">
-            <div>
-              <h2 className="font-serif text-3xl font-semibold mb-6">
-                Scrivici
-              </h2>
-              {submitted ? (
-                <p className="text-muted-foreground">
+        <div className="mt-20 grid gap-16 lg:grid-cols-[1.2fr_1fr] lg:gap-24">
+          <Reveal>
+            {submitted ? (
+              <div className="py-10">
+                <p className="lm-script t-accent text-[2.6rem] leading-none">Grazie</p>
+                <p className="lm-body mt-4 max-w-md">
                   Grazie per averci contattato. Ti risponderemo al più presto.
                 </p>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium mb-2">
-                      Nome
-                    </label>
-                    <Input
-                      id="name"
-                      value={formState.name}
-                      onChange={(e) =>
-                        setFormState((s) => ({ ...s, name: e.target.value }))
-                      }
-                      required
-                      placeholder="Il tuo nome"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium mb-2">
-                      Email
-                    </label>
-                    <Input
-                      id="email"
-                      type="email"
-                      value={formState.email}
-                      onChange={(e) =>
-                        setFormState((s) => ({ ...s, email: e.target.value }))
-                      }
-                      required
-                      placeholder="la.tua@email.it"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="message" className="block text-sm font-medium mb-2">
-                      Messaggio
-                    </label>
-                    <textarea
-                      id="message"
-                      value={formState.message}
-                      onChange={(e) =>
-                        setFormState((s) => ({ ...s, message: e.target.value }))
-                      }
-                      required
-                      rows={5}
-                      className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                      placeholder="Il tuo messaggio..."
-                    />
-                  </div>
-                  {submitError && (
-                    <p className="text-sm text-red-600">{submitError}</p>
-                  )}
-                  <Button type="submit" size="lg" disabled={submitting}>
-                    {submitting ? "Invio..." : "Invia Messaggio"}
-                  </Button>
-                </form>
-              )}
-            </div>
-
-            <div>
-              <h2 className="font-serif text-3xl font-semibold mb-6">
-                Dove Siamo
-              </h2>
-              <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <MapPin className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
-                  <div>
-                    <p className="font-medium">Spirito Alchemico</p>
-                    <p className="text-muted-foreground">
-                      San Nicola Arcella
-                      <br />
-                      Calabria, Italia
-                    </p>
-                  </div>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-9">
+                <div>
+                  <label htmlFor="name" className="lm-eyebrow">
+                    Nome
+                  </label>
+                  <Input
+                    id="name"
+                    value={formState.name}
+                    onChange={(e) => setFormState((s) => ({ ...s, name: e.target.value }))}
+                    required
+                    placeholder="Il tuo nome"
+                  />
                 </div>
-                <div className="flex items-center gap-4">
-                  <a
-                    href="https://instagram.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    <Instagram className="h-5 w-5" />
-                    Instagram
-                  </a>
-                  <a
-                    href="https://facebook.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    <Facebook className="h-5 w-5" />
-                    Facebook
-                  </a>
+                <div>
+                  <label htmlFor="email" className="lm-eyebrow">
+                    Email
+                  </label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={formState.email}
+                    onChange={(e) => setFormState((s) => ({ ...s, email: e.target.value }))}
+                    required
+                    placeholder="la.tua@email.it"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="message" className="lm-eyebrow">
+                    Messaggio
+                  </label>
+                  <textarea
+                    id="message"
+                    value={formState.message}
+                    onChange={(e) => setFormState((s) => ({ ...s, message: e.target.value }))}
+                    required
+                    rows={5}
+                    className={`${fieldClass} resize-none`}
+                    placeholder="Raccontaci cosa cerchi…"
+                  />
+                </div>
+                {submitError && <p className="text-sm text-[#b4533f]">{submitError}</p>}
+                <button type="submit" className="lm-btn lm-btn-solid !px-10 !py-4" disabled={submitting}>
+                  {submitting ? "Invio…" : "Invia messaggio"} <span className="lm-btn-arrow">→</span>
+                </button>
+              </form>
+            )}
+          </Reveal>
+
+          <div>
+            <ClipReveal>
+              <ParallaxImage
+                src={lumenImages.thalasiImmersa}
+                alt="Thalasi immersa nel Tirreno"
+                sizes="(max-width: 1024px) 80vw, 420px"
+                speed={6}
+                frameClassName="lm-arch mx-auto aspect-[3/4] max-w-sm shadow-[0_40px_80px_-38px_rgba(14,54,71,0.5)]"
+              />
+            </ClipReveal>
+            <Reveal className="mx-auto mt-10 max-w-sm space-y-6" delay={0.1}>
+              <div className="flex items-start gap-4">
+                <MapPin className="t-accent mt-1 h-5 w-5 shrink-0" strokeWidth={1.3} />
+                <div>
+                  <p className="lm-italic text-[1.4rem] leading-tight">Lumen Maris</p>
+                  <p className="lm-body">
+                    San Nicola Arcella
+                    <br />
+                    Calabria, Italia
+                  </p>
                 </div>
               </div>
-            </div>
+              <div className="flex items-center gap-6">
+                <a
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="lm-link lm-ui flex items-center gap-2 text-sm text-[var(--t-muted)] hover:text-[var(--t-fg)]"
+                >
+                  <Instagram className="h-4 w-4" strokeWidth={1.4} /> Instagram
+                </a>
+                <a
+                  href="https://facebook.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="lm-link lm-ui flex items-center gap-2 text-sm text-[var(--t-muted)] hover:text-[var(--t-fg)]"
+                >
+                  <Facebook className="h-4 w-4" strokeWidth={1.4} /> Facebook
+                </a>
+              </div>
+            </Reveal>
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </div>
   );
 }

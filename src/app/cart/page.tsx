@@ -3,147 +3,123 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { Minus, Plus, X } from "lucide-react";
 import { useCartStore } from "@/store/cart-store";
 import { CheckoutButton } from "@/components/CheckoutButton";
-import { Minus, Plus, Trash2 } from "lucide-react";
+import { LumenDisplayTitle } from "@/components/lumen/LumenDisplayTitle";
+import { Reveal } from "@/components/motion/Reveal";
 
 export default function CartPage() {
   const [mounted, setMounted] = useState(false);
-  const {
-    items,
-    updateQuantity,
-    removeItem,
-    getSubtotal,
-  } = useCartStore();
+  const { items, updateQuantity, removeItem, getSubtotal } = useCartStore();
 
   useEffect(() => setMounted(true), []);
 
   const subtotal = getSubtotal();
   const freeShipping = subtotal >= 100;
   const shipping = freeShipping ? 0 : 9.9;
-
-  if (!mounted) {
-    return (
-      <div data-nav-surface="light" className="pt-24 pb-20 px-4 min-h-screen">
-        <div className="max-w-4xl mx-auto">
-          <p className="text-muted-foreground">Caricamento...</p>
-        </div>
-      </div>
-    );
-  }
+  const progress = Math.min(100, (subtotal / 100) * 100);
 
   return (
-    <div data-nav-surface="light" className="pt-24 pb-20 px-4 min-h-screen">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="lm-serif mb-12 text-4xl font-normal text-[var(--lm-text)]">
-          Carrello
-        </h1>
+    <div data-theme="sand" className="min-h-screen px-[var(--lm-section-px)] pb-24 pt-32 md:pt-40">
+      <div className="mx-auto max-w-5xl">
+        <LumenDisplayTitle as="h1" size="lg" lines={[{ serif: "Il tuo", script: "carrello" }]} />
 
-        {items.length === 0 ? (
-          <div className="text-center py-16">
-            <p className="text-muted-foreground text-lg mb-6">
-              Il tuo carrello è vuoto
-            </p>
-            <Link href="/profumi" className="lm-btn lm-btn-solid">
+        {!mounted ? (
+          <p className="lm-body mt-16 text-center">Caricamento…</p>
+        ) : items.length === 0 ? (
+          <Reveal className="mt-16 text-center">
+            <p className="lm-script t-accent text-[2.2rem]">è ancora vuoto</p>
+            <p className="lm-body mx-auto mt-4 max-w-sm">Il mare ha ancora molto da raccontarti. Scegli il tuo profumo.</p>
+            <Link href="/profumi" className="lm-btn lm-btn-solid mt-10">
               Vai ai profumi
             </Link>
-          </div>
+          </Reveal>
         ) : (
-          <div className="grid lg:grid-cols-3 gap-12">
-            <div className="lg:col-span-2 space-y-6">
+          <div className="mt-16 grid gap-12 lg:grid-cols-[1fr_22rem] lg:gap-16">
+            <ul className="divide-y divide-[var(--t-line)] border-y border-[var(--t-line)]">
               {items.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex gap-6 p-4 rounded-lg border border-border"
-                >
-                  <div className="relative w-24 h-24 flex-shrink-0 rounded overflow-hidden bg-muted/20">
-                    <Image
-                      src={item.image}
-                      alt={item.name}
-                      fill
-                      className="object-cover"
-                      sizes="96px"
-                    />
+                <li key={item.id} className="flex gap-5 py-6 md:gap-7">
+                  <div className="relative h-32 w-24 shrink-0 overflow-hidden rounded-t-full bg-[var(--lm-sand-deep)]">
+                    <Image src={item.image} alt={item.name} fill sizes="96px" className="object-cover" />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-serif font-semibold">{item.name}</h3>
-                    <p className="text-sm text-muted-foreground">{item.size}</p>
-                    <p className="font-medium mt-1">€{item.price.toFixed(2)}</p>
-                    <div className="flex items-center gap-2 mt-2">
-                      <button
-                        onClick={() =>
-                          updateQuantity(item.id, item.quantity - 1)
-                        }
-                        className="p-1 rounded hover:bg-muted"
-                        aria-label="Diminuisci"
-                      >
-                        <Minus className="h-4 w-4" />
-                      </button>
-                      <span className="w-8 text-center">{item.quantity}</span>
-                      <button
-                        onClick={() =>
-                          updateQuantity(item.id, item.quantity + 1)
-                        }
-                        className="p-1 rounded hover:bg-muted"
-                        aria-label="Aumenta"
-                      >
-                        <Plus className="h-4 w-4" />
-                      </button>
+                  <div className="flex min-w-0 flex-1 flex-col justify-between">
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <h3 className="lm-italic text-[1.5rem] leading-tight">{item.name}</h3>
+                        <p className="lm-eyebrow mt-2">{item.size}</p>
+                      </div>
+                      <p className="lm-italic text-[1.4rem] tabular-nums">€{(item.price * item.quantity).toFixed(2)}</p>
+                    </div>
+                    <div className="mt-4 flex items-center justify-between">
+                      <div className="flex items-center rounded-full border border-[var(--t-line)]">
+                        <button
+                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                          className="flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:bg-[var(--t-card)]"
+                          aria-label="Diminuisci"
+                        >
+                          <Minus className="h-3.5 w-3.5" strokeWidth={1.4} />
+                        </button>
+                        <span className="w-7 text-center tabular-nums">{item.quantity}</span>
+                        <button
+                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          className="flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:bg-[var(--t-card)]"
+                          aria-label="Aumenta"
+                        >
+                          <Plus className="h-3.5 w-3.5" strokeWidth={1.4} />
+                        </button>
+                      </div>
                       <button
                         onClick={() => removeItem(item.id)}
-                        className="p-1 rounded hover:bg-red-100 text-red-600 ml-2"
-                        aria-label="Rimuovi"
+                        className="lm-link lm-ui flex items-center gap-1.5 text-[10px] uppercase tracking-[0.22em] text-[var(--t-muted)] hover:text-[var(--t-fg)]"
+                        aria-label={`Rimuovi ${item.name}`}
                       >
-                        <Trash2 className="h-4 w-4" />
+                        <X className="h-3 w-3" strokeWidth={1.4} /> Rimuovi
                       </button>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="font-semibold">
-                      €{(item.price * item.quantity).toFixed(2)}
-                    </p>
-                  </div>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
 
-            <div>
-              <div className="sticky top-28 p-6 rounded-lg border border-border bg-card">
-                <h3 className="font-serif text-xl font-semibold mb-4">
-                  Riepilogo
-                </h3>
-                <div className="space-y-2 mb-4">
+            <aside>
+              <div className="rounded-[var(--lm-radius-soft)] border border-[var(--t-line)] bg-[var(--t-card)] p-7 backdrop-blur-sm lg:sticky lg:top-28">
+                <h2 className="lm-italic text-[1.8rem]">Riepilogo</h2>
+                <div className="mt-6 space-y-3 text-sm">
                   <div className="flex justify-between">
-                    <span>Subtotale</span>
-                    <span>€{subtotal.toFixed(2)}</span>
+                    <span className="text-[var(--t-muted)]">Subtotale</span>
+                    <span className="tabular-nums">€{subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Spedizione</span>
-                    <span>
-                      {freeShipping ? (
-                        <span className="text-accent font-medium">Gratuita</span>
-                      ) : (
-                        `€${shipping.toFixed(2)}`
-                      )}
-                    </span>
+                    <span className="text-[var(--t-muted)]">Spedizione</span>
+                    <span className="tabular-nums">{freeShipping ? "Gratuita" : `€${shipping.toFixed(2)}`}</span>
                   </div>
                 </div>
-                {!freeShipping && (
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Aggiungi €{(100 - subtotal).toFixed(2)} per la spedizione
-                    gratuita
+
+                <div className="mt-6">
+                  <div className="h-[3px] overflow-hidden rounded-full bg-[var(--t-line)]">
+                    <div
+                      className="h-full rounded-full bg-[var(--t-accent)] transition-[width] duration-[900ms] ease-editorial"
+                      style={{ width: `${progress}%` }}
+                    />
+                  </div>
+                  <p className="lm-ui mt-3 text-xs text-[var(--t-muted)]">
+                    {freeShipping
+                      ? "Hai la spedizione gratuita ✦"
+                      : `Aggiungi €${(100 - subtotal).toFixed(2)} per la spedizione gratuita`}
                   </p>
-                )}
-                <div className="flex justify-between text-lg font-semibold border-t pt-4 mb-6">
-                  <span>Totale</span>
-                  <span>€{(subtotal + shipping).toFixed(2)}</span>
                 </div>
-                <CheckoutButton />
-                <p className="text-xs text-muted-foreground mt-4 text-center">
-                  Pagamento sicuro tramite Stripe
-                </p>
+
+                <div className="mt-6 flex items-baseline justify-between border-t border-[var(--t-line)] pt-6">
+                  <span className="lm-eyebrow">Totale</span>
+                  <span className="lm-italic text-[2rem] tabular-nums">€{(subtotal + shipping).toFixed(2)}</span>
+                </div>
+                <div className="mt-6">
+                  <CheckoutButton />
+                </div>
+                <p className="lm-ui mt-4 text-center text-xs text-[var(--t-muted)]">Pagamento sicuro tramite Stripe</p>
               </div>
-            </div>
+            </aside>
           </div>
         )}
       </div>
