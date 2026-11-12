@@ -25,6 +25,8 @@ const nextConfig = {
     ];
   },
   images: {
+    // Keep SVG out of the Image Optimization API (mitigates historical RCE class).
+    dangerouslyAllowSVG: false,
     remotePatterns: [
       {
         protocol: "https",
